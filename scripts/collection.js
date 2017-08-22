@@ -25,6 +25,6 @@ window.onload = function() {
 
     // the for loop inserts 12 albums; += appends content to strings; each loop adds contents of the template (collectionItemTemplate) to the innerHTML of cc... generating albums on the page
     for (var i = 0; i < 12; i++) {
-        collectionContainer.innerHTML += collectionItemTemplate;
+        collectionContainer.innerHTML += collectionItemTemplate; // x += y's meaning is x  = x + y
     }
 };
