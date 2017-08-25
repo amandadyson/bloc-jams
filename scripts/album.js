@@ -55,42 +55,47 @@ var createSongRow = function(songNumber, songName, songLength) {
      + '</tr>'
      ;
 
-    return template;
+     return $(template);
 };
 
-//moved this to the global scope
-// select all html elements required to display: title, artist, release info, image, and song list; in order to populate these with info we assign corresponding values of the album objects' properties to the html elements
-var albumTitle = document.getElementsByClassName('album-view-title')[0];
-var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-var albumImage = document.getElementsByClassName('album-cover-art')[0];
-var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+//call jQuery's text() method to replace the content of the text nodes, instead of setting firstChild.nodeValue
+$albumTitle.text(album.title);
+$albumArtist.text(album.artist);
+$albumReleaseInfo.text(album.year + ' ' + album.label);
+$albumImage.attr('src', album.albumArtUrl);
 
 //function that the program calls when the window loads; will utilize the object's stored info by injecting it into the template
 var setCurrentAlbum = function(album) {
 
-    albumTitle.firstChild.nodeValue = album.title;
-    albumArtist.firstChild.nodeValue = album.artist;
-    albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-    albumImage.setAttribute('src', album.albumArtUrl);
+  var $albumTitle = $('.album-view-title');
+  var $albumArtist = $('.album-view-artist');
+  var $albumReleaseInfo = $('.album-view-release-info');
+  var $albumImage = $('.album-cover-art');
+  var $albumSongList = $('.album-view-song-list');
 
-    // set the value to an empty string to ensure we're working with a clean slate
-    albumSongList.innerHTML = '';
+  $albumSongList.empty();
 
     // go through all the songs and insert them into the html using the innerHTML property; the createSongRow function is called at each loop, passing in the info arguments from our album object
-    for (var i = 0; i < album.songs.length; i++) {
-        albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+  for (var i = 0; i < album.songs.length; i++) {
+      var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+      $albumSongList.append($newRow);
     }
 };
 
 //the parent needs to be selected so the other actions can take place; keep traversing the DOM upward until a parent with a specified class name is found
 var findParentByClassName = function(element, targetClass) {
-    if (element) {
-        var currentParent = element.parentElement;
-        while (currentParent.className !== targetClass && currentParent.className !== null) {
-            currentParent = currentParent.parentElement;
-        }
+  var currentParent = element.parentElement;
+  if (currentParent) {
+    while (currentParent.className && currentParent.className != targetClass) {
+      currentParent = currentParent.parentElement;
+    }
+    if (currentParent.className == targetClass) {
         return currentParent;
+    } else {
+      alert("No parent with that class name found.");
+    }
+  } else {
+      alert("No parent found.");
     }
 };
 
