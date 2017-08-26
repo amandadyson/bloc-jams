@@ -195,6 +195,37 @@ var currentVolume = 80;
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 
+//added for checkpoint 32 assignment
+var $mainPlayPauseButton = $('.main-controls .play-pause');
+
+//added for checkpoint 32 assignment
+var togglePlayfromPlayerBar = function() {
+
+  //If a song is paused and the play button is clicked in the player bar
+  if (currentSoundFile.isPaused && mainPlayPauseButton.click) {
+
+  //Change the song number cell from a play button to a pause button
+  songNumberCell.html(pauseButtonTemplate);
+
+ //Change the HTML of the player bar's play button to a pause button
+ $('.main-controls .play-pause').html(pauseButtonTemplate);
+
+ //Play the song
+ currentSoundFile.play();
+
+//If  song is playing and the pause button is clicked
+} else if (currentSoundFile.play && mainPlayPauseButton.click) {
+
+  //Change the song number cell from a pause button to a play button
+  songNumberCell.html(playButtonTemplate);
+
+  //Change the HTML of the player bar's pause button to a play button
+  $('.main-controls .play-pause').html(playButtonTemplate);
+
+  //Pause the song
+  currentSoundFile.isPaused();
+  }
+};
 
 
 $(document).ready(function() {
@@ -202,4 +233,6 @@ $(document).ready(function() {
   $previousButton.click(previousSong);
   $nextButton.click(nextSong);
 
+  //added for checkpoint 32 assignment
+  $mainPlayPauseButton.click(togglePlayfromPlayerBar);
 });
